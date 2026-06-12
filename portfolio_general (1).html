@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akil Youcef-Zakaria — Portfolio · Data, IA & Business Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   DESIGN TOKENS — "ANALYTIQUE / ATELIER"
+   Palette : Graphite #1C1B19 · Ivoire #F6F3EC · Stone #DDD6C8
+   Encre #2B2A27 · Cuivre (accent) #B5703A · Cuivre clair #D9A06B
+   Type : Cormorant Garamond (display) + Montserrat (body) + JetBrains Mono (data)
+   ══════════════════════════════════════════════════════════ */
+:root{
+  --graphite:#1C1B19;
+  --graphite-soft:#252320;
+  --ivoire:#F6F3EC;
+  --ivoire-warm:#EFEAE0;
+  --stone:#DDD6C8;
+  --stone-light:#EAE5DA;
+  --encre:#2B2A27;
+  --muted:#8A8478;
+  --muted-light:#B6AFA1;
+  --cuivre:#B5703A;
+  --cuivre-light:#D9A06B;
+  --cuivre-pale:#EBD7C3;
+
+  --f-serif:'Cormorant Garamond', Georgia, serif;
+  --f-sans:'Montserrat', 'Helvetica Neue', sans-serif;
+  --f-mono:'JetBrains Mono', monospace;
+
+  --ease:cubic-bezier(0.22,0.61,0.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--f-sans);
+  background:var(--ivoire);
+  color:var(--encre);
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--ivoire-warm);}
+::-webkit-scrollbar-thumb{background:var(--stone);}
+
+/* ── focus visibility ── */
+a:focus-visible, button:focus-visible{
+  outline:2px solid var(--cuivre);
+  outline-offset:3px;
+}
+
+/* ══════════════════════════════════════════════
+   SIGNATURE ELEMENT — "data thread"
+   A thin animated line that runs through the page,
+   connecting sections like a continuous data stream.
+   Implemented as a fixed vertical thread on desktop.
+══════════════════════════════════════════════ */
+.thread{
+  position:fixed;
+  top:0; bottom:0;
+  left:48px;
+  width:1px;
+  background:linear-gradient(to bottom, transparent, var(--stone) 8%, var(--stone) 92%, transparent);
+  z-index:5;
+  pointer-events:none;
+}
+.thread-dot{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:7px; height:7px;
+  background:var(--cuivre);
+  border-radius:50%;
+  box-shadow:0 0 0 4px rgba(181,112,58,0.12);
+  transition:top .25s var(--ease);
+}
+@media (max-width:1100px){ .thread{display:none;} }
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+.nav-progress{
+  position:fixed; top:0; left:0; height:2px;
+  background:var(--cuivre); z-index:1001;
+  width:0%; transition:width .1s linear;
+}
+.site-nav{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  height:60px;
+  background:rgba(28,27,25,0.92);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 56px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.nav-brand{display:flex; align-items:baseline; gap:14px;}
+.nav-brand-mark{
+  font-family:var(--f-serif);
+  font-size:20px; font-weight:500; font-style:italic;
+  color:var(--ivoire); letter-spacing:0.04em;
+}
+.nav-brand-sub{
+  font-size:7px; letter-spacing:0.28em;
+  color:var(--muted-light); text-transform:uppercase;
+}
+.nav-links{display:flex; gap:0; list-style:none;}
+.nav-links li a{
+  display:block; font-size:8px; letter-spacing:0.18em;
+  color:rgba(255,255,255,0.4); text-transform:uppercase;
+  text-decoration:none; padding:0 16px; height:60px; line-height:60px;
+  transition:color .25s var(--ease); cursor:pointer;
+}
+.nav-links li a:hover, .nav-links li a.active{ color:var(--cuivre-light); }
+.nav-toggle{ display:none; }
+
+@media (max-width:1000px){
+  .site-nav{ padding:0 24px; }
+  .nav-links{ display:none; }
+}
+
+/* ══════════════════════════════════════════════
+   SHARED SECTION SHELL
+══════════════════════════════════════════════ */
+.section{ padding-top:60px; }
+.shell{
+  max-width:1140px;
+  margin:0 auto;
+  padding:90px 64px 110px;
+  width:100%;
+}
+@media (max-width:760px){
+  .shell{ padding:64px 24px 80px; }
+}
+
+.section-head{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding-bottom:30px; border-bottom:1px solid var(--stone);
+  margin-bottom:64px; gap:24px;
+}
+.eyebrow{
+  font-size:7px; letter-spacing:0.32em; text-transform:uppercase;
+  color:var(--cuivre); margin-bottom:14px;
+  display:flex; align-items:center; gap:12px;
+  font-family:var(--f-mono);
+}
+.eyebrow::before{
+  content:''; display:inline-block; width:24px; height:1px; background:var(--cuivre);
+}
+.section-title{
+  font-family:var(--f-serif); font-weight:300;
+  font-size:clamp(40px,4.6vw,60px);
+  line-height:1.05; color:var(--graphite); letter-spacing:0.01em;
+}
+.section-title em{ font-style:italic; color:var(--muted); font-weight:300; }
+.section-index{
+  font-family:var(--f-mono); font-size:11px;
+  color:var(--muted-light); letter-spacing:0.1em; white-space:nowrap; margin-top:4px;
+}
+.lead{
+  font-family:var(--f-serif); font-style:italic; font-weight:300;
+  font-size:20px; line-height:1.7; color:var(--muted);
+  max-width:680px; margin-bottom:60px;
+}
+
+/* dark variant */
+.section--dark{ background:var(--graphite); color:rgba(255,255,255,0.7); }
+.section--dark .section-title{ color:var(--ivoire); }
+.section--dark .section-title em{ color:rgba(255,255,255,0.35); }
+.section--dark .section-head{ border-color:rgba(255,255,255,0.08); }
+.section--dark .eyebrow{ color:var(--cuivre-light); }
+.section--dark .eyebrow::before{ background:var(--cuivre-light); }
+.section--dark .section-index{ color:rgba(255,255,255,0.2); }
+.section--dark .lead{ color:rgba(255,255,255,0.45); }
+
+/* ══════════════════════════════════════════════
+   REVEAL ANIMATIONS
+══════════════════════════════════════════════ */
+.reveal{
+  opacity:0; transform:translateY(26px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+}
+.reveal.visible{ opacity:1; transform:translateY(0); }
+.r1{ transition-delay:.08s; }
+.r2{ transition-delay:.16s; }
+.r3{ transition-delay:.24s; }
+.r4{ transition-delay:.32s; }
+
+@media (prefers-reduced-motion:reduce){
+  .reveal, .reveal.visible{ opacity:1; transform:none; transition:none; }
+  .skill-bar-fill{ transition:none !important; }
+}
+
+/* ══════════════════════════════════════════════
+   01 — HERO / COVER
+══════════════════════════════════════════════ */
+#hero{
+  min-height:100vh;
+  background:var(--graphite);
+  position:relative;
+  overflow:hidden;
+  display:flex; flex-direction:column; justify-content:flex-end;
+}
+.hero-grid{
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:linear-gradient(to top, transparent, black 70%);
+}
+.hero-orbit{
+  position:absolute; top:-180px; right:-180px;
+  width:520px; height:520px;
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:50%;
+  pointer-events:none;
+}
+.hero-orbit::before{
+  content:''; position:absolute; inset:60px;
+  border:1px solid rgba(181,112,58,0.18);
+  border-radius:50%;
+}
+.hero-orbit-dot{
+  position:absolute; top:50%; left:0;
+  width:8px; height:8px; margin-top:-4px; margin-left:-4px;
+  background:var(--cuivre-light); border-radius:50%;
+  animation:orbit 14s linear infinite;
+  transform-origin:260px 260px;
+}
+@keyframes orbit{
+  from{ transform:rotate(0deg) translateX(260px) rotate(0deg); }
+  to{ transform:rotate(360deg) translateX(260px) rotate(-360deg); }
+}
+
+.hero-content{
+  position:relative; z-index:2;
+  padding:0 64px 90px;
+}
+.hero-corner-tl, .hero-corner-tr{
+  position:absolute; top:74px;
+}
+.hero-corner-tl{ left:64px; }
+.hero-corner-tr{ right:64px; text-align:right; }
+.hero-corner-label{
+  font-size:7px; letter-spacing:0.28em; text-transform:uppercase;
+  color:rgba(255,255,255,0.2); line-height:2.2; font-family:var(--f-mono);
+}
+.hero-corner-val{
+  font-size:9.5px; letter-spacing:0.1em;
+  color:rgba(255,255,255,0.5); line-height:2.2;
+}
+
+.hero-eyebrow{
+  font-size:7.5px; letter-spacing:0.32em; text-transform:uppercase;
+  color:var(--cuivre-light); margin-bottom:30px;
+  display:flex; align-items:center; gap:16px; font-family:var(--f-mono);
+}
+.hero-eyebrow::before{ content:''; display:inline-block; width:36px; height:1px; background:var(--cuivre); }
+
+.hero-name{
+  font-family:var(--f-serif); font-weight:300; color:var(--ivoire);
+  line-height:0.95; margin-bottom:6px;
+}
+.hero-name-first{ font-size:clamp(64px,9vw,110px); display:block; letter-spacing:0.02em; }
+.hero-name-last{
+  font-size:clamp(46px,6.2vw,78px); display:block; font-style:italic;
+  color:rgba(255,255,255,0.32); letter-spacing:0.04em;
+}
+
+.hero-role{
+  font-size:11px; letter-spacing:0.22em; text-transform:uppercase;
+  color:rgba(255,255,255,0.55); margin-top:30px; margin-bottom:54px;
+  max-width:640px; line-height:1.9;
+}
+.hero-role strong{ color:var(--cuivre-light); font-weight:500; letter-spacing:0.15em; }
+
+.hero-meta{
+  display:flex; gap:0; border-top:1px solid rgba(255,255,255,0.08); padding-top:28px;
+}
+.hero-meta-item{
+  flex:1; padding-right:28px; border-right:1px solid rgba(255,255,255,0.06); margin-right:28px;
+}
+.hero-meta-item:last-child{ border-right:none; margin-right:0; }
+.hero-meta-label{
+  font-size:7px; letter-spacing:0.24em; text-transform:uppercase;
+  color:rgba(255,255,255,0.22); margin-bottom:6px; font-family:var(--f-mono);
+}
+.hero-meta-val{
+  font-size:11.5px; font-weight:300; color:rgba(255,255,255,0.62); letter-spacing:0.03em;
+}
+
+@media (max-width:900px){
+  .hero-content{ padding:0 24px 64px; }
+  .hero-corner-tl, .hero-corner-tr{ display:none; }
+  .hero-meta{ flex-direction:column; gap:20px; }
+  .hero-meta-item{ border-right:none; margin-right:0; padding-right:0; }
+}
+
+/* ══════════════════════════════════════════════
+   02 — ABOUT
+══════════════════════════════════════════════ */
+#about{ background:var(--ivoire); }
+.about-grid{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1px; background:var(--stone); border:1px solid var(--stone);
+}
+.about-cell{ background:#FFFFFF; padding:42px 44px 46px; transition:background .25s var(--ease); }
+.about-cell:hover{ background:var(--ivoire-warm); }
+.about-cell-num{
+  font-family:var(--f-serif); font-size:60px; font-weight:300;
+  color:var(--stone-light); line-height:1; margin-bottom:16px;
+}
+.about-cell-label{
+  font-size:7.5px; letter-spacing:0.24em; text-transform:uppercase;
+  color:var(--cuivre); margin-bottom:12px; font-family:var(--f-mono);
+}
+.about-cell-text{ font-size:12px; font-weight:300; line-height:1.95; color:var(--encre); }
+.about-cell-text strong{ font-weight:500; color:var(--graphite); }
+
+.about-quote{
+  margin-top:1px;
+  background:var(--graphite);
+  padding:48px 56px;
+  display:flex; align-items:center; gap:40px; flex-wrap:wrap;
+}
+.about-quote-text{
+  font-family:var(--f-serif); font-style:italic; font-weight:300;
+  font-size:21px; line-height:1.6; color:rgba(255,255,255,0.7);
+  flex:1; min-width:280px;
+}
+.about-quote-stats{ display:flex; gap:40px; }
+.about-stat{ display:flex; flex-direction:column; gap:4px; }
+.about-stat-val{ font-family:var(--f-serif); font-size:34px; font-weight:300; color:var(--cuivre-light); line-height:1; }
+.about-stat-label{ font-size:7px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.3); font-family:var(--f-mono); }
+
+@media (max-width:760px){
+  .about-grid{ grid-template-columns:1fr; }
+  .about-quote{ padding:40px 28px; flex-direction:column; align-items:flex-start; }
+}
+
+/* ══════════════════════════════════════════════
+   03 — FORMATION (timeline)
+══════════════════════════════════════════════ */
+#formation{ background:var(--ivoire-warm); }
+.timeline{ position:relative; padding-left:64px; }
+.timeline::before{
+  content:''; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:var(--stone);
+}
+.tl-item{ position:relative; margin-bottom:64px; }
+.tl-item:last-child{ margin-bottom:0; }
+.tl-item::before{
+  content:''; position:absolute; left:-68px; top:8px;
+  width:9px; height:9px; border:1px solid var(--graphite);
+  background:var(--ivoire-warm); transform:rotate(45deg);
+}
+.tl-item.is-current::before{ background:var(--cuivre); border-color:var(--cuivre); }
+.tl-date{
+  font-size:8px; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:10px; font-family:var(--f-mono);
+}
+.tl-degree{
+  font-family:var(--f-serif); font-size:26px; font-weight:400;
+  color:var(--graphite); line-height:1.2; margin-bottom:4px;
+}
+.tl-school{
+  font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:18px;
+}
+.tl-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+.tl-tag{
+  font-size:8px; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--stone);
+  padding:4px 11px; background:#FFFFFF;
+}
+.tl-desc{ font-size:12px; font-weight:300; line-height:1.9; color:var(--muted); max-width:640px; }
+
+@media (max-width:760px){
+  .timeline{ padding-left:32px; }
+  .tl-item::before{ left:-36px; }
+}
+
+/* ══════════════════════════════════════════════
+   04 — COMPÉTENCES (two groups)
+══════════════════════════════════════════════ */
+#skills{ background:var(--ivoire); }
+.skills-groups{ display:flex; flex-direction:column; gap:1px; background:var(--stone); border:1px solid var(--stone); }
+.skills-group-row{ display:grid; grid-template-columns:260px 1fr; background:var(--stone); gap:1px; }
+.skills-group-label{
+  background:var(--graphite); color:var(--ivoire);
+  padding:32px 28px; display:flex; flex-direction:column; justify-content:center; gap:8px;
+}
+.skills-group-label .glabel-eyebrow{
+  font-size:7px; letter-spacing:0.24em; text-transform:uppercase;
+  color:var(--cuivre-light); font-family:var(--f-mono);
+}
+.skills-group-label .glabel-title{
+  font-family:var(--f-serif); font-size:24px; font-weight:300; line-height:1.2;
+}
+.skills-group-items{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--stone); }
+.sk-cell{ background:#FFFFFF; padding:28px 26px; transition:background .25s var(--ease); }
+.sk-cell:hover{ background:var(--ivoire-warm); }
+.sk-cell-hdr{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+.sk-cell-lbl{ font-size:7.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--cuivre); font-family:var(--f-mono); }
+.sk-cell-items{ font-size:11px; font-weight:300; color:var(--encre); line-height:2.05; }
+.sk-cell-items strong{ font-weight:500; color:var(--graphite); }
+.sk-bar-wrap{ margin-top:18px; padding-top:14px; border-top:1px solid var(--stone-light); }
+.sk-bar-meta{ display:flex; justify-content:space-between; font-size:7.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:7px; font-family:var(--f-mono); }
+.sk-bar{ height:1px; background:var(--stone); }
+.sk-bar-fill{ height:1px; background:var(--graphite); width:0%; transition:width 1.1s var(--ease); }
+
+@media (max-width:900px){
+  .skills-group-row{ grid-template-columns:1fr; }
+  .skills-group-items{ grid-template-columns:1fr; }
+}
+
+/* ══════════════════════════════════════════════
+   05 — EXPÉRIENCES
+══════════════════════════════════════════════ */
+#experience{ background:var(--graphite); color:rgba(255,255,255,0.7); }
+.exp-list{ display:flex; flex-direction:column; }
+.exp-item{
+  display:grid; grid-template-columns:200px 1fr; gap:0;
+  border-bottom:1px solid rgba(255,255,255,0.06); padding:38px 0;
+  transition:background .25s var(--ease);
+}
+.exp-item:first-child{ border-top:1px solid rgba(255,255,255,0.06); }
+.exp-item:hover{ background:rgba(255,255,255,0.02); }
+.exp-left{ padding-right:40px; }
+.exp-date{ font-size:8px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.22); line-height:1.9; font-family:var(--f-mono); }
+.exp-loc{ font-size:8.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cuivre-light); margin-top:8px; }
+.exp-right{ padding-left:40px; border-left:1px solid rgba(255,255,255,0.06); }
+.exp-badge{
+  display:inline-block; font-size:7px; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--cuivre-light); border:1px solid rgba(217,160,107,0.3);
+  padding:3px 10px; margin-bottom:14px;
+}
+.exp-role{ font-family:var(--f-serif); font-size:22px; font-weight:400; color:var(--ivoire); margin-bottom:4px; line-height:1.2; }
+.exp-org{ font-size:8.5px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.32); margin-bottom:16px; }
+.exp-desc{ font-size:11.5px; font-weight:300; line-height:1.9; color:rgba(255,255,255,0.42); max-width:600px; }
+
+@media (max-width:760px){
+  .exp-item{ grid-template-columns:1fr; }
+  .exp-right{ border-left:none; padding-left:0; border-top:1px solid rgba(255,255,255,0.06); padding-top:18px; margin-top:16px; }
+}
+
+/* ══════════════════════════════════════════════
+   06 — PROJETS
+══════════════════════════════════════════════ */
+#projects{ background:var(--ivoire-warm); }
+.proj-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--stone); border:1px solid var(--stone); }
+.proj-card{ background:#FFFFFF; padding:44px 44px 40px; display:flex; flex-direction:column; transition:background .25s var(--ease); }
+.proj-card:hover{ background:var(--ivoire); }
+.proj-card-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; }
+.proj-status{
+  font-size:7px; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--stone); padding:3px 10px; font-family:var(--f-mono);
+}
+.proj-status.live{ color:var(--cuivre); border-color:var(--cuivre-pale); }
+.proj-n{ font-family:var(--f-serif); font-size:48px; font-weight:300; color:var(--stone-light); line-height:1; }
+.proj-name{ font-family:var(--f-serif); font-size:25px; font-weight:500; color:var(--graphite); line-height:1.2; margin-bottom:14px; }
+.proj-desc{ font-size:11.5px; font-weight:300; line-height:1.9; color:var(--muted); flex:1; margin-bottom:22px; }
+.proj-stack{ display:flex; flex-wrap:wrap; gap:6px; padding-top:18px; border-top:1px solid var(--stone-light); }
+.proj-tag{ font-size:7.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); background:var(--ivoire-warm); padding:3px 10px; font-family:var(--f-mono); }
+
+@media (max-width:760px){ .proj-grid{ grid-template-columns:1fr; } }
+
+/* ══════════════════════════════════════════════
+   07 — VALEURS / CE QUI ME DÉFINIT
+══════════════════════════════════════════════ */
+#values{ background:var(--ivoire); }
+.values-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--stone); border:1px solid var(--stone); }
+.value-cell{
+  background:#FFFFFF; padding:36px 22px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  transition:background .25s var(--ease), transform .25s var(--ease);
+}
+.value-cell:hover{ background:var(--graphite); transform:translateY(-3px); }
+.value-cell:hover .value-icon, .value-cell:hover .value-label{ color:var(--cuivre-light); }
+.value-cell:hover .value-sub{ color:rgba(255,255,255,0.5); }
+.value-icon{
+  font-family:var(--f-serif); font-style:italic; font-size:30px; font-weight:300;
+  color:var(--cuivre-pale); transition:color .25s var(--ease);
+}
+.value-label{ font-size:8.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--graphite); transition:color .25s var(--ease); }
+.value-sub{ font-size:9px; color:var(--muted); line-height:1.6; transition:color .25s var(--ease); }
+
+@media (max-width:900px){ .values-grid{ grid-template-columns:repeat(2,1fr); } }
+
+/* ══════════════════════════════════════════════
+   08 — CONTACT
+══════════════════════════════════════════════ */
+#contact{ background:var(--graphite); color:rgba(255,255,255,0.7); min-height:90vh; }
+.contact-grid{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.06);
+  margin-bottom:80px;
+}
+.contact-cell{ background:var(--graphite); padding:40px 44px; transition:background .25s var(--ease); }
+.contact-cell:hover{ background:rgba(255,255,255,0.02); }
+.contact-cell-label{ font-size:7px; letter-spacing:0.26em; text-transform:uppercase; color:rgba(255,255,255,0.22); margin-bottom:12px; font-family:var(--f-mono); }
+.contact-cell-val{ font-family:var(--f-serif); font-size:20px; font-weight:300; color:rgba(255,255,255,0.7); margin-bottom:4px; }
+.contact-cell-val a{ color:inherit; text-decoration:none; transition:color .2s; }
+.contact-cell-val a:hover{ color:var(--cuivre-light); }
+.contact-cell-sub{ font-size:9px; color:rgba(255,255,255,0.22); letter-spacing:0.06em; }
+
+.contact-closing{ text-align:center; padding:60px 0 40px; }
+.closing-mark{
+  font-family:var(--f-serif); font-size:130px; font-weight:300;
+  color:rgba(255,255,255,0.035); line-height:1; margin-bottom:18px; letter-spacing:0.05em;
+}
+.closing-name{ font-family:var(--f-serif); font-size:21px; font-weight:300; font-style:italic; color:rgba(255,255,255,0.3); letter-spacing:0.06em; }
+.closing-ref{ margin-top:20px; font-size:7.5px; letter-spacing:0.26em; color:rgba(255,255,255,0.12); text-transform:uppercase; font-family:var(--f-mono); }
+
+@media (max-width:760px){ .contact-grid{ grid-template-columns:1fr; } }
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+.site-footer{
+  background:var(--graphite); border-top:1px solid rgba(255,255,255,0.05);
+  padding:24px 64px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+}
+.footer-ref{ font-size:7.5px; letter-spacing:0.18em; color:rgba(255,255,255,0.18); text-transform:uppercase; font-family:var(--f-mono); }
+.footer-mark{ font-family:var(--f-serif); font-size:14px; font-weight:300; font-style:italic; letter-spacing:0.1em; color:rgba(255,255,255,0.25); }
+
+@media (max-width:760px){ .site-footer{ padding:20px 24px; justify-content:center; text-align:center; } }
+</style>
+</head>
+<body>
+
+<!-- Scroll progress bar -->
+<div class="nav-progress" id="progress"></div>
+
+<!-- Signature element: vertical data-thread with moving dot -->
+<div class="thread"><div class="thread-dot" id="threadDot"></div></div>
+
+<!-- ════════════════════════════════
+     NAVIGATION
+════════════════════════════════ -->
+<nav class="site-nav">
+  <div class="nav-brand">
+    <div class="nav-brand-mark">Akil Youcef-Zakaria</div>
+    <div class="nav-brand-sub">Data · IA · Business Analytics</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about" data-section="about">Profil</a></li>
+    <li><a href="#formation" data-section="formation">Formation</a></li>
+    <li><a href="#skills" data-section="skills">Compétences</a></li>
+    <li><a href="#experience" data-section="experience">Expériences</a></li>
+    <li><a href="#projects" data-section="projects">Projets</a></li>
+    <li><a href="#values" data-section="values">Profil</a></li>
+    <li><a href="#contact" data-section="contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════
+     01 — HERO
+════════════════════════════════ -->
+<section class="section" id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orbit"><div class="hero-orbit-dot"></div></div>
+
+  <div class="hero-corner-tl">
+    <div class="hero-corner-label">Portfolio</div>
+    <div class="hero-corner-val">Édition 2026</div>
+  </div>
+  <div class="hero-corner-tr">
+    <div class="hero-corner-label">Disponibilité</div>
+    <div class="hero-corner-val">Septembre 2026</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Portfolio général · Profil hybride</div>
+    <div class="hero-name">
+      <span class="hero-name-first">Akil</span>
+      <span class="hero-name-last">Youcef-Zakaria</span>
+    </div>
+    <div class="hero-role">
+      <strong>Data · IA · Business Analytics</strong> — Étudiant ingénieur en Intelligence Artificielle &amp; Systèmes de Données, formé également aux sciences de l'ingénieur (Physique-Chimie). Profil hybride entre rigueur analytique, développement technique et compréhension opérationnelle du terrain.
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Formation</div>
+        <div class="hero-meta-val">L1 IA &amp; Systèmes de Données · Univ. Montpellier</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Langues</div>
+        <div class="hero-meta-val">Français · Arabe · Anglais — Bilingue</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Compétences clés</div>
+        <div class="hero-meta-val">Python · SQL · Data &amp; IA · Gestion de projet · Analyse business</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Localisation</div>
+        <div class="hero-meta-val">Montpellier · Paris · Mobilité totale</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     02 — À PROPOS
+════════════════════════════════ -->
+<section class="section" id="about">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">01 · About me</div>
+        <h1 class="section-title">Un profil <em>hybride</em>,<br>entre données et terrain.</h1>
+      </div>
+      <div class="section-index">01 / 07</div>
+    </div>
+
+    <p class="lead reveal r1">
+      Mon parcours combine une formation scientifique exigeante, une spécialisation en intelligence artificielle et systèmes de données, et une expérience concrète d'environnements opérationnels à forte exigence. Cette double culture — technique et terrain — nourrit une approche pragmatique de la donnée et de la gestion de projet.
+    </p>
+
+    <div class="about-grid reveal r2">
+      <div class="about-cell">
+        <div class="about-cell-num">01</div>
+        <div class="about-cell-label">Dimension technique &amp; data</div>
+        <div class="about-cell-text">
+          Maîtrise des <strong>systèmes d'information</strong>, bases de données relationnelles et NoSQL, développement full-stack (Python, FastAPI, Java, TypeScript), machine learning et IA générative (LLM, RAG, agents). Capacité à concevoir, développer et documenter des outils data de bout en bout.
+        </div>
+      </div>
+      <div class="about-cell">
+        <div class="about-cell-num">02</div>
+        <div class="about-cell-label">Dimension analytique &amp; scientifique</div>
+        <div class="about-cell-text">
+          Formation initiale en <strong>Ingénierie Physique-Chimie</strong> (Mécanique / Physique) : méthodes rigoureuses de modélisation, décomposition et résolution de problèmes complexes. Statistiques, machine learning, data warehouse et analyse de données à grande échelle.
+        </div>
+      </div>
+      <div class="about-cell">
+        <div class="about-cell-num">03</div>
+        <div class="about-cell-label">Dimension terrain &amp; opérationnelle</div>
+        <div class="about-cell-text">
+          Expérience directe de l'excellence opérationnelle en environnement premium et international : <strong>management d'équipe</strong>, coordination multi-acteurs, gestion administrative et relation client en contexte exigeant.
+        </div>
+      </div>
+      <div class="about-cell">
+        <div class="about-cell-num">04</div>
+        <div class="about-cell-label">Dimension entrepreneuriale &amp; créative</div>
+        <div class="about-cell-text">
+          Co-fondateur d'un projet entrepreneurial, direction artistique indépendante, composition musicale. Capacité à <strong>concevoir, piloter et livrer</strong> des projets complets avec autonomie — de l'idée à l'exécution et à la communication.
+        </div>
+      </div>
+    </div>
+
+    <div class="about-quote reveal r3">
+      <div class="about-quote-text">
+        "Ce qui me distingue, ce n'est pas une compétence isolée — c'est la capacité à relier l'analyse de données, la construction d'outils techniques et la compréhension fine des réalités opérationnelles d'un projet ou d'une organisation."
+      </div>
+      <div class="about-quote-stats">
+        <div class="about-stat">
+          <div class="about-stat-val">3</div>
+          <div class="about-stat-label">Langues</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">5+</div>
+          <div class="about-stat-label">Projets data &amp; IA</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-val">2</div>
+          <div class="about-stat-label">Formations universitaires</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     03 — FORMATION
+════════════════════════════════ -->
+<section class="section" id="formation">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">02 · Academic background</div>
+        <h2 class="section-title">Parcours<br><em>académique</em></h2>
+      </div>
+      <div class="section-index">02 / 07</div>
+    </div>
+
+    <p class="lead reveal r1">
+      Un double parcours — sciences de l'ingénieur puis informatique spécialisée IA — qui fonde une méthode rigoureuse au service de la donnée et des systèmes d'information.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-item is-current reveal r1">
+        <div class="tl-date">Septembre 2025 — Juin 2026 · En cours</div>
+        <div class="tl-degree">Licence 1 — Ingénierie Informatique</div>
+        <div class="tl-school">Université de Montpellier · Faculté des Sciences · Spécialité Intelligence Artificielle &amp; Systèmes de Données</div>
+        <div class="tl-tags">
+          <span class="tl-tag">Systèmes d'information</span>
+          <span class="tl-tag">Bases de données</span>
+          <span class="tl-tag">Machine learning</span>
+          <span class="tl-tag">Deep learning</span>
+          <span class="tl-tag">LLM &amp; RAG</span>
+          <span class="tl-tag">Agents IA</span>
+          <span class="tl-tag">Data warehouse</span>
+          <span class="tl-tag">Développement full-stack</span>
+          <span class="tl-tag">Méthodes agiles</span>
+        </div>
+        <div class="tl-desc">
+          Architecture des systèmes d'information · Modélisation et conception de SI · Bases de données relationnelles (PostgreSQL, Oracle) et NoSQL · Machine learning et statistical learning · LLM, RAG, LangChain, LangGraph, embeddings HuggingFace · Développement Python avancé, JavaScript/TypeScript, Java, PHP · Docker et environnements DevOps · Data warehouse et analyse de données à grande échelle.
+        </div>
+      </div>
+
+      <div class="tl-item reveal r2">
+        <div class="tl-date">Septembre 2021 — Avril 2025</div>
+        <div class="tl-degree">Licence Ingénierie Physique-Chimie</div>
+        <div class="tl-school">Université de Montpellier · Options Mécanique / Physique</div>
+        <div class="tl-tags">
+          <span class="tl-tag">Mécanique</span>
+          <span class="tl-tag">Thermodynamique</span>
+          <span class="tl-tag">Modélisation numérique</span>
+          <span class="tl-tag">Mathématiques appliquées</span>
+          <span class="tl-tag">SolidWorks avancé</span>
+          <span class="tl-tag">Méthodes expérimentales</span>
+        </div>
+        <div class="tl-desc">
+          Formation rigoureuse aux méthodes scientifiques, à la modélisation et à la résolution de problèmes complexes. Mécanique du point et des solides, mécanique des fluides, résistance des matériaux, thermodynamique, optique et ondes, électromagnétisme. Modélisation et simulation numérique, conception assistée par ordinateur. Mathématiques appliquées : algèbre linéaire, équations différentielles, calcul vectoriel.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     04 — COMPÉTENCES
+════════════════════════════════ -->
+<section class="section" id="skills">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">03 · Skills</div>
+        <h2 class="section-title">Compétences<br><em>techniques &amp; business</em></h2>
+      </div>
+      <div class="section-index">03 / 07</div>
+    </div>
+
+    <p class="lead reveal r1">
+      Deux ensembles de compétences complémentaires : un socle technique orienté data &amp; IA, et un socle business orienté gestion de projet, analyse et communication.
+    </p>
+
+    <div class="skills-groups reveal r2">
+
+      <!-- Group : Tech & Data -->
+      <div class="skills-group-row">
+        <div class="skills-group-label">
+          <div class="glabel-eyebrow">Groupe 01</div>
+          <div class="glabel-title">Tech &amp; Data</div>
+        </div>
+        <div class="skills-group-items">
+          <div class="sk-cell">
+            <div class="sk-cell-hdr">
+              <div class="sk-cell-lbl">Data &amp; IA</div>
+            </div>
+            <div class="sk-cell-items">
+              <strong>Python</strong> · SQL · PostgreSQL · Oracle · Spark<br>
+              Probabilités &amp; statistiques · Machine learning<br>
+              Deep learning · LLM · RAG · LangChain<br>
+              LangGraph · HuggingFace embeddings
+            </div>
+            <div class="sk-bar-wrap">
+              <div class="sk-bar-meta"><span>Maîtrise</span><span>Avancée</span></div>
+              <div class="sk-bar"><div class="sk-bar-fill" data-width="88%"></div></div>
+            </div>
+          </div>
+          <div class="sk-cell">
+            <div class="sk-cell-hdr">
+              <div class="sk-cell-lbl">Systèmes d'information</div>
+            </div>
+            <div class="sk-cell-items">
+              Modélisation &amp; conception de SI<br>
+              Bases relationnelles &amp; NoSQL<br>
+              Data warehouse · Analyse &amp; préparation de données<br>
+              Architecture applicative en couches
+            </div>
+            <div class="sk-bar-wrap">
+              <div class="sk-bar-meta"><span>Maîtrise</span><span>Solide</span></div>
+              <div class="sk-bar"><div class="sk-bar-fill" data-width="82%"></div></div>
+            </div>
+          </div>
+          <div class="sk-cell">
+            <div class="sk-cell-hdr">
+              <div class="sk-cell-lbl">Développement logiciel</div>
+            </div>
+            <div class="sk-cell-items">
+              <strong>Python</strong> (avancé) · Java<br>
+              JavaScript / TypeScript · PHP<br>
+              FastAPI · Angular · Docker<br>
+              Programmation orientée objet · Refactoring
+            </div>
+            <div class="sk-bar-wrap">
+              <div class="sk-bar-meta"><span>Maîtrise</span><span>Avancée</span></div>
+              <div class="sk-bar"><div class="sk-bar-fill" data-width="85%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group : Business & Project -->
+      <div class="skills-group-row">
+        <div class="skills-group-label">
+          <div class="glabel-eyebrow">Groupe 02</div>
+          <div class="glabel-title">Business &amp; Gestion de projet</div>
+        </div>
+        <div class="skills-group-items">
+          <div class="sk-cell">
+            <div class="sk-cell-hdr">
+              <div class="sk-cell-lbl">Analyse &amp; reporting</div>
+            </div>
+            <div class="sk-cell-items">
+              Création d'indicateurs métier<br>
+              Statistical learning · Visualisation de données<br>
+              Reporting structuré · Tableaux de bord<br>
+              Analyse quantitative
+            </div>
+            <div class="sk-bar-wrap">
+              <div class="sk-bar-meta"><span>Maîtrise</span><span>Confirmée</span></div>
+              <div class="sk-bar"><div class="sk-bar-fill" data-width="80%"></div></div>
+            </div>
+          </div>
+          <div class="sk-cell">
+            <div class="sk-cell-hdr">
+              <div class="sk-cell-lbl">Gestion de projet &amp; coordination</div>
+            </div>
+            <div class="sk-cell-items">
+              Gestion de projet (Agile)<br>
+              Coordination multi-équipes &amp; multi-parties<br>
+              Pilotage end-to-end · Suivi opérationnel<br>
+              Culture économique &amp; finance d'entreprise
+            </div>
+            <div class="sk-bar-wrap">
+              <div class="sk-bar-meta"><span>Maîtrise</span><span>Confirmée</span></div>
+              <div class="sk-bar"><div class="sk-bar-fill" data-width="78%"></div></div>
+            </div>
+          </div>
+          <div class="sk-cell">
+            <div class="sk-cell-hdr">
+              <div class="sk-cell-lbl">Communication &amp; langues</div>
+            </div>
+            <div class="sk-cell-items">
+              <strong>Français</strong> — natif<br>
+              <strong>Arabe</strong> — natif<br>
+              <strong>Anglais</strong> — bilingue<br>
+              Communication professionnelle écrite &amp; orale
+            </div>
+            <div class="sk-bar-wrap">
+              <div class="sk-bar-meta"><span>3 langues</span><span>Bilingue EN</span></div>
+              <div class="sk-bar"><div class="sk-bar-fill" data-width="95%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     05 — EXPÉRIENCES
+════════════════════════════════ -->
+<section class="section" id="experience">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">04 · Professional experience</div>
+        <h2 class="section-title">Expériences<br><em>professionnelles</em></h2>
+      </div>
+      <div class="section-index">04 / 07</div>
+    </div>
+
+    <p class="lead reveal r1">
+      Des expériences variées, en environnement premium, entrepreneurial ou administratif, qui ont développé une capacité de gestion multi-tâches, de coordination et de service.
+    </p>
+
+    <div class="exp-list">
+      <div class="exp-item reveal r1">
+        <div class="exp-left">
+          <div class="exp-date">Mai – Juin 2024<br>Mai – Juin 2025<br>(deux éditions)</div>
+          <div class="exp-loc">Paris</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-badge">Premium · International</div>
+          <div class="exp-role">Manager de Stand</div>
+          <div class="exp-org">Roland Garros · Grand Slam · Paris</div>
+          <div class="exp-desc">
+            Supervision et contrôle des opérations de stand lors d'un événement sportif international de grande envergure, sur deux éditions consécutives. Management d'équipe, garantie de la qualité du service en flux continu, gestion de l'ouverture et de la fermeture, coordination logistique. Développement d'une compréhension directe des standards d'excellence en environnement premium et international.
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal r1">
+        <div class="exp-left">
+          <div class="exp-date">Mai – Juin 2024</div>
+          <div class="exp-loc">Montpellier</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-badge">Entrepreneurial · Digital</div>
+          <div class="exp-role">Co-fondateur &amp; Développeur Web</div>
+          <div class="exp-org">ASAP STORE · Magasin Éphémère</div>
+          <div class="exp-desc">
+            Projet entrepreneurial mené de A à Z : développement du site web du magasin, conception et exécution de la stratégie de contenu sur les réseaux sociaux (Instagram / TikTok), coordination avec fournisseurs et prestataires, recrutement et management de l'équipe de vente. Gestion de projet sous contrainte temporelle forte et coordination pluridisciplinaire.
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal r2">
+        <div class="exp-left">
+          <div class="exp-date">Avril – Septembre 2025</div>
+          <div class="exp-loc">Montpellier</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-badge">Administratif · Structuré</div>
+          <div class="exp-role">Garde Loge</div>
+          <div class="exp-org">Cité Universitaire · Montpellier</div>
+          <div class="exp-desc">
+            Accueil et gestion des demandes des résidents, gestion des courriels et suivi administratif rigoureux, organisation et mise à jour documentaire en flux continu. Compétences directement transposables au suivi de dossiers, à la documentation de projet et à la gestion structurée d'un flux d'informations dense.
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal r2">
+        <div class="exp-left">
+          <div class="exp-date">Décembre 2025 – Janvier 2026<br>Sept. – Déc. 2023</div>
+          <div class="exp-loc">Paris</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-badge">Service · Client</div>
+          <div class="exp-role">Employé de Restauration</div>
+          <div class="exp-org">Restauration · Paris</div>
+          <div class="exp-desc">
+            Préparation des produits dans le respect des normes d'hygiène, prise de commandes, encaissement et gestion de caisse, organisation du poste de travail en période d'affluence. Sens du service, aisance relationnelle et réactivité développés en environnement de restauration parisienne.
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal r3">
+        <div class="exp-left">
+          <div class="exp-date">Juillet 2022 – Aujourd'hui</div>
+          <div class="exp-loc">Paris</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-badge">Créatif · Autonome</div>
+          <div class="exp-role">Artiste Indépendant</div>
+          <div class="exp-org">Studio de Musique · Paris</div>
+          <div class="exp-desc">
+            Direction artistique autonome, gestion de l'image de marque personnelle, distribution sur plateformes de streaming et réseaux sociaux. Outils numériques avancés (Suite Adobe, FL Studio). Démonstration d'une capacité à piloter un projet créatif de façon professionnelle et autonome sur la durée — compétence de gestion de projet transversale.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     06 — PROJETS
+════════════════════════════════ -->
+<section class="section" id="projects">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">05 · Selected projects</div>
+        <h2 class="section-title">Projets<br><em>sélectionnés</em></h2>
+      </div>
+      <div class="section-index">05 / 07</div>
+    </div>
+
+    <p class="lead reveal r1">
+      Quatre réalisations concrètes qui illustrent une maîtrise transversale : systèmes d'information, développement full-stack, IA appliquée et analyse de données.
+    </p>
+
+    <div class="proj-grid reveal r2">
+      <div class="proj-card">
+        <div class="proj-card-top">
+          <div class="proj-status live">En cours</div>
+          <div class="proj-n">01</div>
+        </div>
+        <div class="proj-name">DocFlow</div>
+        <div class="proj-desc">
+          Application de gestion documentaire full-stack avec analyse IA intégrée et architecture orientée agents. Conception de l'architecture en couches, intégration LangChain/LangGraph pour l'analyse automatisée, interface pensée pour des utilisateurs non-techniques. Refactoring continu et optimisation du backend.
+        </div>
+        <div class="proj-stack">
+          <span class="proj-tag">FastAPI</span>
+          <span class="proj-tag">LangChain</span>
+          <span class="proj-tag">LangGraph</span>
+          <span class="proj-tag">PostgreSQL</span>
+          <span class="proj-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-top">
+          <div class="proj-status live">En cours</div>
+          <div class="proj-n">02</div>
+        </div>
+        <div class="proj-name">Pipeline Multi-Agent · Analyse d'images</div>
+        <div class="proj-desc">
+          Orchestration d'agents IA pour l'analyse d'images avec base de connaissances métier, embeddings sémantiques, architecture multi-agent et interface desktop. Production de procédures techniques accessibles à des équipes pluridisciplinaires, via une interface RAG documentée.
+        </div>
+        <div class="proj-stack">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">LangChain</span>
+          <span class="proj-tag">RAG</span>
+          <span class="proj-tag">Chroma</span>
+          <span class="proj-tag">HuggingFace</span>
+          <span class="proj-tag">PySide6</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-top">
+          <div class="proj-status">Terminé</div>
+          <div class="proj-n">03</div>
+        </div>
+        <div class="proj-name">Rapport des Français aux médias</div>
+        <div class="proj-desc">
+          Préparation et analyse de données à grande échelle sur un entrepôt de données structuré : création d'indicateurs métier, application de méthodes de machine learning et de statistical learning, restitution visuelle. Démarche complète d'analyse : cadrage, nettoyage, modélisation, interprétation, reporting.
+        </div>
+        <div class="proj-stack">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">Machine learning</span>
+          <span class="proj-tag">Data Warehouse</span>
+          <span class="proj-tag">R</span>
+          <span class="proj-tag">Visualisation</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-top">
+          <div class="proj-status">Terminé</div>
+          <div class="proj-n">04</div>
+        </div>
+        <div class="proj-name">Application de Gestion de Workflows</div>
+        <div class="proj-desc">
+          Application web de suivi de tâches et de statuts pour un déploiement reproductible en environnement d'équipe. Architecture en couches (Controller, Facade, DAO) et conteneurisation complète avec Docker Compose pour faciliter les mises en production et le travail collaboratif.
+        </div>
+        <div class="proj-stack">
+          <span class="proj-tag">Angular</span>
+          <span class="proj-tag">TypeScript</span>
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">Docker Compose</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     07 — CE QUI ME DÉFINIT (Valeurs)
+════════════════════════════════ -->
+<section class="section" id="values">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">06 · What defines me</div>
+        <h2 class="section-title">Ce qui me<br><em>définit</em></h2>
+      </div>
+      <div class="section-index">06 / 07</div>
+    </div>
+
+    <p class="lead reveal r1">
+      Cinq traits qui reviennent dans tous mes projets et expériences, et qui structurent ma manière de travailler.
+    </p>
+
+    <div class="values-grid reveal r2">
+      <div class="value-cell">
+        <div class="value-icon">R</div>
+        <div class="value-label">Rigueur</div>
+        <div class="value-sub">Méthode scientifique appliquée à l'analyse et à la documentation.</div>
+      </div>
+      <div class="value-cell">
+        <div class="value-icon">A</div>
+        <div class="value-label">Autonomie</div>
+        <div class="value-sub">Projets menés de bout en bout, de l'idée à la livraison.</div>
+      </div>
+      <div class="value-cell">
+        <div class="value-icon">C</div>
+        <div class="value-label">Créativité</div>
+        <div class="value-sub">Approche créative de la résolution de problèmes et de la communication.</div>
+      </div>
+      <div class="value-cell">
+        <div class="value-icon">P</div>
+        <div class="value-label">Polyvalence</div>
+        <div class="value-sub">À l'aise sur des rôles techniques, analytiques et opérationnels.</div>
+      </div>
+      <div class="value-cell">
+        <div class="value-icon">A</div>
+        <div class="value-label">Adaptabilité</div>
+        <div class="value-sub">Apprentissage rapide démontré par un changement de filière réussi.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     08 — CONTACT
+════════════════════════════════ -->
+<section class="section" id="contact">
+  <div class="shell">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">07 · Contact</div>
+        <h2 class="section-title" style="color:var(--ivoire);">Entrons<br>en <em>contact</em></h2>
+      </div>
+      <div class="section-index">07 / 07</div>
+    </div>
+
+    <div class="contact-grid reveal r1">
+      <div class="contact-cell">
+        <div class="contact-cell-label">Téléphone</div>
+        <div class="contact-cell-val"><a href="tel:+33640343578">+33 6 40 34 35 78</a></div>
+        <div class="contact-cell-sub">Disponible · Réponse sous 24h</div>
+      </div>
+      <div class="contact-cell">
+        <div class="contact-cell-label">Email</div>
+        <div class="contact-cell-val"><a href="mailto:youcef.akil@outlook.fr">youcef.akil@outlook.fr</a></div>
+        <div class="contact-cell-sub">Communication préférentielle</div>
+      </div>
+      <div class="contact-cell">
+        <div class="contact-cell-label">LinkedIn</div>
+        <div class="contact-cell-val"><a href="https://www.linkedin.com/in/youcef-zakaria-akil/" target="_blank" rel="noopener">linkedin.com/in/youcef-zakaria-akil</a></div>
+        <div class="contact-cell-sub">Profil complet &amp; recommandations</div>
+      </div>
+      <div class="contact-cell">
+        <div class="contact-cell-label">Localisation</div>
+        <div class="contact-cell-val">Montpellier · Paris</div>
+        <div class="contact-cell-sub">Mobilité totale · Disponible dès septembre 2026</div>
+      </div>
+    </div>
+
+    <div class="contact-closing reveal r2">
+      <div class="closing-mark">AY</div>
+      <div class="closing-name">Akil Youcef-Zakaria</div>
+      <div class="closing-ref">Portfolio général · Data, IA &amp; Business Analytics · 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-ref">Portfolio · Akil Youcef-Zakaria · 2026</div>
+  <div class="footer-mark">AY</div>
+  <div class="footer-ref">youcef.akil@outlook.fr · +33 6 40 34 35 78</div>
+</footer>
+
+<script>
+/* ── SCROLL PROGRESS + THREAD DOT ── */
+window.addEventListener('scroll', function() {
+  var st = document.documentElement.scrollTop;
+  var sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var progress = sh > 0 ? (st / sh) * 100 : 0;
+  document.getElementById('progress').style.width = progress + '%';
+
+  var dot = document.getElementById('threadDot');
+  if (dot) {
+    var vh = window.innerHeight;
+    dot.style.top = (progress / 100 * (vh - 80) + 40) + 'px';
+  }
+});
+
+/* ── REVEAL ON SCROLL ── */
+function revealOnScroll() {
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    var rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 80) el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
+revealOnScroll();
+
+/* ── NAV ACTIVE STATE ── */
+var sections = document.querySelectorAll('.section');
+var navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', function() {
+  var pos = window.scrollY + 140;
+  sections.forEach(function(s) {
+    if (s.offsetTop <= pos && s.offsetTop + s.offsetHeight > pos) {
+      navLinks.forEach(function(l) { l.classList.remove('active'); });
+      var active = document.querySelector('.nav-links a[data-section="' + s.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+});
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      window.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+    }
+  });
+});
+
+/* ── SKILL BARS ANIMATION ── */
+function animateSkillBars() {
+  document.querySelectorAll('.sk-bar-fill').forEach(function(bar) {
+    var w = bar.getAttribute('data-width');
+    bar.style.width = w;
+  });
+}
+var skillsObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      animateSkillBars();
+      skillsObserver.disconnect();
+    }
+  });
+}, { threshold: 0.2 });
+var skillsSection = document.getElementById('skills');
+if (skillsSection) skillsObserver.observe(skillsSection);
+</script>
+
+</body>
+</html>
